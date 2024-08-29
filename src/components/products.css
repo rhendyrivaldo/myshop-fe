@@ -1,0 +1,5 @@
+.scrollable-area {
+    height: 450px; /* Full height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    border-right: 1px solid #ddd; /* Optional: add a border to distinguish areas */
+  }
