@@ -5,7 +5,7 @@ import './products.css';
 import { Field, Form, Formik } from "formik";
 
 export default function Products(props) {
-    const { products, onAddToCart } = props;
+    const { products, onAddToCart, onLoadMoreProduct } = props;
 
     return (
         <div>
@@ -42,6 +42,11 @@ export default function Products(props) {
                     </div>
                 })
             }
+            <div className="text-center">
+                <button className="btn btn-primary" onClick={() => onLoadMoreProduct()}>
+                    Load More
+                </button>
+            </div>
             </div>
         </div>
     )

@@ -11,23 +11,39 @@ export default function MainPage() {
     const [productIdToQuantityMap, setProductIdToQuantityMap] = useState({});
     const [productIdToProductsMap, setProductIdToProductsMap] = useState({});
     
+    const [page, setPage] = useState(0);
+    
+    const pageSize = 4;
+
     useEffect(() => {
         loadProducts();
     }, []);
 
     const loadProducts = async () => {
         try {
-            const response = await axios.get(PRODUCT_URL);
+            const response = await axios.get(PRODUCT_URL, {
+                params: {
+                    page: page,
+                    pageSize: pageSize
+                }
+            });
+
+            const data = response.data.content;
         
-            setProducts(response.data);
-            let idToProductsMap = response.data.reduce((map, product) => {
+            setProducts([...products, ...data]);
+            let idToProductsMap = data.reduce((map, product) => {
                 map[product.id] = product
                 return map;
             }, {productIdToProductsMap});
-            setProductIdToProductsMap(idToProductsMap);
+            setProductIdToProductsMap({productIdToProductsMap, ...idToProductsMap,});
         } catch (e) {
             console.log("Error getting products: " + e)
         }
+    }
+
+    const onLoadMoreProduct = () => {
+        setPage(page + 1);
+        loadProducts();
     }
 
     const onAddToCart = (productId, quantity) => {
@@ -56,6 +72,7 @@ export default function MainPage() {
                         <Products
                             products={products}
                             onAddToCart={onAddToCart}
+                            onLoadMoreProduct={onLoadMoreProduct}
                         />
                     </div>
                     <div className="col-md-8">
